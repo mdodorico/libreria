@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Mvc6.Models.Proveedores>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div style="display: flex; align-items: baseline;">
+    <h2 style="color: forestgreen; font-family: Middle Schooler; font-size: 58px">ABM Proveedores</h2>&nbsp;&nbsp;&nbsp;
+    <h2 style="color: orangered; font-family: MATILDAS BACK TO SCHOOL_Demo; font-size: 45px"> RC</h2>
+</div>
+
+<a class="btn btn-success" style="margin-bottom:10px" onclick="PopupForm('@Url.Action("AddOrEdit","Proveedores")')"><i class="fa fa-plus"></i> Nuevo</a>
+
+<table id="proveedoresTable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Direccion</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+@section scripts{
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+
+    <script>
+		var Popup, dataTable;
+
+        $(document).ready(function () {
+
+            dataTable = $("#proveedoresTable").DataTable({
+                "bFilter": false,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+                "ajax": {
+                    "url": "/Proveedores/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "nombre" },
+                    { "data": "email" },
+                    { "data": "telefono" },
+                    { "data": "direccion" },
+                    {
+                        "data": "id", "render": function (data) {
+                            return "<a class='btn btn-primary btn-sm' onclick=PopupForm('@Url.Action("AddOrEdit","Proveedores")/" + data + "')>Editar</a><a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete("+data+")>Borrar</a>";
+                        },
+                        "orderable": false,
+                        "width": "150px"
+                    }
+                ],
+                "language": {
+                    "emptyTable" : "No hay proveedores registrados, click en <b>Add New</b> Button"
+                }
+            });
+        });
+
+        function PopupForm(url) {
+            var formDiv = $('<div/>');
+            $.get(url)
+            .done(function (response) {
+                formDiv.html(response);
+
+                Popup = formDiv.dialog({
+                    autoOpen: true,
+                    resizable: false,
+                    title: 'Crear o editar proveedor',
+                    width: 'auto',
+                    close: function(){
+                        Popup.dialog('destroy').remove();
+                    }
+                });
+            });
+        }
+
+        function SubmitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+
+                $.ajax({
+                    type: "POST",
+                    url: form.action,
+                    data: $(form).serialize(),
+                    success: function (data) {
+                        if (data.success) {
+                            Popup.dialog('close');
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message,{
+                                globalPosition : "top center",
+                                className : "success"
+                            })
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        function Delete(id) {
+            if (confirm('¿Seguro que desea eliminar este proveedor?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete","Proveedores")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+}

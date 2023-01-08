@@ -1,0 +1,65 @@
+﻿@model Mvc6.Models.UsuarioLogin
+
+@{
+    ViewBag.Title = "Ingresar";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Iniciar sesión</title>
+
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="~/Content/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <link href="~/Content/css/style-responsive.css" rel="stylesheet" />
+</head>
+<body class="login-img3-body">
+    <div class="container">
+
+        <div class="login-form">
+            @using (Html.BeginForm("Ingresar", "Login"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+            <div class="login-wrap">
+                <p class="login-img"><i class="icon_lock_alt"></i></p>
+                @{ if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-block alert-danger fade in">@ViewBag.Message</div>
+                    }
+                }
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_mail_alt"></i></span>
+                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.email)
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                    @Html.PasswordFor(m => m.clave, new { @class = "form-control", placeholder = "Clave" })
+                    @Html.ValidationMessageFor(m => m.clave)
+                </div>
+                <input type="submit" value="Ingresar" class="btn btn-primary btn-lg" />
+                <button class="btn btn-info btn-lg" onclick="location.href='@Url.Action("Registrarse", "Login")';return false;">Registrarse</button>
+                <br />
+                <div>
+                    <a href="@Url.Action("RecuperarPassword","Login")" style="color: #7e7e7e; ">¿Olvidaste la contraseña?</a>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

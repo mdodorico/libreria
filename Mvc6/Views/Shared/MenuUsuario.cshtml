@@ -1,0 +1,13 @@
+﻿<div style="display: flex; align-items: baseline">
+    <span style="margin-left: 10px">
+        <img alt="" src="~/Imagenes/@ViewBag.Imagen" width="45px" height="40px">
+        @ViewBag.Usuario
+    </span>
+    <span style="margin-left: 10px">
+        @using (Html.BeginForm("LogOut", "Home", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <button class="btn btn-danger btn-sm" margin-left="50px" onclick="javascript:document.getElementById('logoutForm').submit()">Salir</button>
+        }
+    </span>
+</div>

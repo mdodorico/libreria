@@ -1,0 +1,55 @@
+﻿@model Mvc6.Models.Usuarios
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "Usuarios", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.id)
+    @Html.HiddenFor(model => model.imagen)
+    <div class="col-lg-3  col-sm-12">
+        <div class="" height="100" width="80px">
+            <img src="/Imagenes/@Html.DisplayFor(model => model.imagen)" alt="" width="80">
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.nombre, new { @class = "control-label" })
+        @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.nombre)
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.apellido, new { @class = "control-label" })
+        @Html.EditorFor(model => model.apellido, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.apellido)
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="file">Imagen</label>
+        <input type="file" name="file" />
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.email, new { @class = "control-label" })
+        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.email)
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.clave, new { @class = "control-label" })
+        @Html.EditorFor(model => model.clave, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.clave)
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.rol, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownList("rol", new SelectList(new[] { "USER", "ADM" }))
+        @Html.ValidationMessageFor(model => model.rol)
+    </div>
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+    </div>
+}

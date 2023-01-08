@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Mvc6.Models.Carrito>
+
+@{
+    ViewBag.Title = "Carrito";
+}
+
+<div style="display: flex; align-items: baseline;">
+    <h2 style="color: forestgreen; font-family: Middle Schooler; font-size: 58px">Carrito</h2>&nbsp;&nbsp;&nbsp;
+    <h2 style="color: orangered; font-family: MATILDAS BACK TO SCHOOL_Demo; font-size: 45px"> RC</h2>
+</div>
+<table id="carritoTable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<br/>
+<div style="display:flex; align-items:baseline;">
+    <h5>Total a pagar: </h5>
+    <span id="montoTotal" style="font-size: 18px; padding:5px;"></span>
+</div>
+<span><button class="btn btn-success" onclick="location.href='@Url.Action("Terminar", "Home")';return false;">Finalizar</button></span>
+
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    @section scripts{
+        <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+
+        <script>
+		var Popup, dataTable;
+
+        $(document).ready(function () {
+
+            dataTable = $("#carritoTable").DataTable({
+                "bFilter": false,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+                "ajax": {
+                    "url": "/Carrito/GetData",
+                    "type": "GET",
+                    "datatype": "json",
+                },
+                "columns": [
+                    {
+                        "data": "Imagen",
+                        'sortable': false,
+                        'searchable': false,
+                        'render': function (Imagen) {
+                            var img = '../Imagenes/' + Imagen;
+                            return '<img src="' + img + '" height="70px" />';
+                        }
+                    },
+                    { "data": "Nombre" },
+                    {
+                        "data": "Precio",
+                        "render": function (Precio, type, row) {
+                            return Precio.toFixed(2)
+                        }
+                    },
+                    { "data": "Descripcion" },
+                    { "data": "Cantidad" },
+                    {
+                        "data": "Id", "render": function (data) {
+                            return "<a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete("+data+")><i class='fa fa-trash'></i> Borrar</a>";
+                        },
+                        "orderable": false,
+                        "width": "150px"
+                    }
+                ],
+                "language": {
+                    "emptyTable" : "No hay productos en el carrito"
+                }
+            });
+
+        });
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Carrito/GetData",
+                dataType: 'json',
+                success: function (data) {
+                    $('#montoTotal').text(data.total.toFixed(2));
+                }
+             });
+        });
+
+        function Delete(id) {
+            if (confirm('¿Quitar producto?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete","Carrito")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+                            window.location.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                        }
+                    }
+                });
+            }
+        }
+        </script>
+    }

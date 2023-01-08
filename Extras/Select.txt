@@ -1,0 +1,9 @@
+use Negocio;
+
+select * from Carrito;
+
+select * from Productos;
+
+select * from Usuarios;
+
+select * from Proveedores;

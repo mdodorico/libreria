@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Mundo Creativo</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header style="margin-top: 2px; display: flex; align-items: baseline; justify-content: space-between;">
+        <div style="display: flex; align-items: baseline;">
+            <div style="margin-left: 30px">
+                <p class="site-title">@Html.ActionLink("Mundo Creativo", "Index", "Home")</p>
+            </div>
+            <nav>
+                <ul id="menu">
+                    <li>@Html.ActionLink("Carrito", "Index", "Carrito")</li>
+                    @{Html.RenderAction("MenuAdmin", "MenuAdmin");}
+                </ul>
+            </nav>
+        </div>
+        <div style="margin-right: 10px">
+            @{Html.RenderAction("MenuUsuario", "MenuUsuario");}
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>Copyright &copy; Mundo Creativo - @DateTime.Now.Year - Diseño y desarrollo: Mariana I. D'Odorico'</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/notify.min.js"></script>
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

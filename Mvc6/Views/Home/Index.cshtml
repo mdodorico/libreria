@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Mvc6.Models.Productos>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div style="display: flex; align-items: baseline;">
+    <h2 style="color: forestgreen; font-family: Middle Schooler; font-size: 58px">Productos</h2>&nbsp;&nbsp;&nbsp;
+    <h2 style="color: orangered; font-family: MATILDAS BACK TO SCHOOL_Demo; font-size: 45px"> RC</h2>
+</div>
+<br />
+<table id="productosTable" class="table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Descripción</th>
+            <th>Stock</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+@section scripts{
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+
+    <script>
+		var Popup, dataTable;
+
+        $(document).ready(function () {
+
+            dataTable = $("#productosTable").DataTable({
+                "bFilter": false,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+                "ajax": {
+                    "url": "/Productos/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    {
+                        "data": "imagen",
+                        'sortable': false,
+                        'searchable': false,
+                        'render': function (imagen) {
+                            var img = '../Imagenes/' + imagen;
+                            return '<img src="' + img + '" height="70px" />';
+                        }
+                    },
+                    { "data": "nombre" },
+                    {
+                        "data": "precio",
+                        "render": function (precio, type, row) {
+                            return precio.toFixed(2)
+                        }
+                    },
+                    { "data": "descripcion" },
+                    {
+                        "data": "stock",
+                        "render": function (stock) {
+                            if (stock === 0) {
+                                return "Sin stock";
+                            }
+                            else {
+                                return stock;
+                            }
+                        }
+                    },
+                    {
+                        "data": "id", "render": function (data) {
+                            return "<a class='btn btn-info btn-sm' style='margin-left:5px' onclick=Create(" + data + ")><i class='fa fa-shopping-basket'></i> Agregar</a>";
+                        },
+                        "orderable": false,
+                        "width": "150px"
+                    }
+                ],
+                "language": {
+                    "emptyTable" : "No hay productos en la tienda"
+                }
+            });
+        });
+
+        function Create(id) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create","Carrito")/' + id,
+                success: function (response) {
+                    window.location.href = response.redirectToUrl;
+                }
+            });
+        }
+    </script>
+}

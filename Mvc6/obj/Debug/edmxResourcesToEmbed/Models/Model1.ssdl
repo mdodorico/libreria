@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NegocioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Carrito">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Imagen" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Precio" Type="float" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Cantidad" Type="int" Nullable="false" />
+    <Property Name="Usuario" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Productos">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="imagen" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="precio" Type="float" Nullable="false" />
+    <Property Name="descripcion" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="stock" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Proveedores">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="telefono" Type="int" Nullable="false" />
+    <Property Name="direccion" Type="nvarchar" MaxLength="250" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="imagen" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="apellido" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="clave" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="rol" Type="nvarchar" MaxLength="250" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="NegocioModelStoreContainer">
+    <EntitySet Name="Carrito" EntityType="Self.Carrito" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Productos" EntityType="Self.Productos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Proveedores" EntityType="Self.Proveedores" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

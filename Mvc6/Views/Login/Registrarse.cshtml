@@ -1,0 +1,88 @@
+﻿@model Mvc6.Models.Usuarios
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Registrarse</title>
+
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="~/Content/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <link href="~/Content/css/style-responsive.css" rel="stylesheet" />
+    <style>
+
+        .btn-primary {
+            background-color: #E3DFDF;
+        }
+
+        .btn-primary:hover {
+                background-color: #9D9D9D;
+            }
+
+        .btn-primary:active {
+                box-shadow: none;
+            }
+    </style>
+</head>
+<body style="background-color:lightblue">
+    <div class="container">
+        <div align="center">
+            <br/>
+            <h2 style="color: #F437BD; font-family: Forte; font-size: 48px ">Crear una cuenta</h2>
+            <hr />
+            @using (Html.BeginForm("Registrarse", "Login", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.nombre, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.apellido, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.apellido, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    <label for="file">Imagen</label>
+                    <input type="file" name="file" />
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.email, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.email)</span>
+                    <p style="color:red">@ViewBag.EmailRepetido</p>
+                    <p style="color:red">@ViewBag.EmailNoValido</p>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.clave, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.clave, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                    <button class="btn btn-warning" onclick="location.href='@Url.Action("Ingresar", "Login")';return false;">Volver</button>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
